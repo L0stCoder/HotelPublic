@@ -1,5 +1,5 @@
 import java.util.Scanner;
-public class V2{
+public class SemesterTest{
 	public static void main(String[]args){
 		Scanner input=new Scanner(System.in);
 		//Item randomization on start
