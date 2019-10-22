@@ -81,10 +81,10 @@ public class HotelV1{
 			FloorOne(FloorAndRoom, Status, INV, F1N, F1);
 		}
 		else if(FloorAndRoom[0]==2){
-		//	FloorTwo(FloorAndRoom, Status, INV, F2N, F2);
+			FloorTwo(FloorAndRoom, Status, INV, F2N, F2);
 		}
 		else{
-			//FloorThree(FloorAndRoom, Status, INV, F3N, F3);
+			FloorThree(FloorAndRoom, Status, INV, F3N, F3);
 		}
 	}
 	static void FloorOne(Integer[] FloorAndRoom, boolean[] Status, Integer[] INV, int[] F1N, String[] F1){
@@ -107,12 +107,14 @@ public class HotelV1{
 				System.out.println("You leave the room");
 				System.out.print("Which room would you like to enter (1-10): ");
 				FloorAndRoom[1]=input.nextInt();
-				while(FloorAndRoom[1]<0&&FloorAndRoom[1]>10){
+				FloorAndRoom[1]=FloorAndRoom[1]-1;
+				while(FloorAndRoom[1]<0||FloorAndRoom[1]>9){
 					System.out.println("INALID INPUT");
 					System.out.print("Which room would you like to enter (1-10): ");
 					FloorAndRoom[1]=input.nextInt();
+					FloorAndRoom[1]=FloorAndRoom[1]-1;
 				}
-				while(FloorAndRoom[1]==10){
+				while(FloorAndRoom[1]==9){
 					StairWell(FloorAndRoom, Status);
 					System.out.println("You back away from the door");
 					System.out.print("Which room would you like to enter (1-10): ");
@@ -120,10 +122,95 @@ public class HotelV1{
 				}
 			}
 			else if(RoomMenuSelect==3){
-				GAMEOVER(FloorAndRoom);
+				GAMEOVER(FloorAndRoom, Status);
 			}
 			else System.out.println("INVALID INPUT");
 		}
+	}
+	static void FloorTwo(Integer[] FloorAndRoom, boolean[] Status, Integer[] INV, int[] F2N, String[] F2){
+		Scanner input=new Scanner(System.in);
+		while(FloorAndRoom[0]==2){
+			System.out.print("You have 3 options, 1 (Search the room), 2 (Leave the room) and 3 (Jump out the window): ");
+			int RoomMenuSelect=input.nextInt();
+			if(RoomMenuSelect==1){
+				System.out.println("You searched the room and find "+F2[FloorAndRoom[1]]+"\n");
+				if(F2N[FloorAndRoom[1]]>7){
+					F2[FloorAndRoom[1]]="Nothing";
+					Inventory(INV, 1);
+				}
+				else if(F2N[FloorAndRoom[1]]>4){
+					F2[FloorAndRoom[1]]="Nothing";
+					Inventory(INV, 0);
+				}
+			}
+			else if(RoomMenuSelect==2){
+				System.out.println("You leave the room");
+				System.out.print("Which room would you like to enter (1-10): ");
+				FloorAndRoom[1]=input.nextInt();
+				FloorAndRoom[1]=FloorAndRoom[1]-1;
+				while(FloorAndRoom[1]<0||FloorAndRoom[1]>9){
+					System.out.println("INALID INPUT");
+					System.out.print("Which room would you like to enter (1-10): ");
+					FloorAndRoom[1]=input.nextInt();
+					FloorAndRoom[1]=FloorAndRoom[1]-1;
+				}
+				while(FloorAndRoom[1]==9){
+					StairWell(FloorAndRoom, Status);
+					System.out.println("You back away from the door");
+					System.out.print("Which room would you like to enter (1-10): ");
+					FloorAndRoom[1]=input.nextInt();
+				}
+			}
+			else if(RoomMenuSelect==3){
+				GAMEOVER(FloorAndRoom, Status);
+			}
+			else System.out.println("INVALID INPUT");
+		}
+	}
+	static void FloorThree(Integer[] FloorAndRoom, boolean[] Status, Integer[] INV, int[] F3N, String[] F3){
+		Scanner input=new Scanner(System.in);
+		while(FloorAndRoom[0]==1){
+			System.out.print("You have 3 options, 1 (Search the room), 2 (Leave the room) and 3 (Jump out the window): ");
+			int RoomMenuSelect=input.nextInt();
+			if(RoomMenuSelect==1){
+				System.out.println("You searched the room and find "+F3[FloorAndRoom[1]]+"\n");
+				if(F3N[FloorAndRoom[1]]>7){
+					Paracute(INV, Status);
+				}
+				else if(F3N[FloorAndRoom[1]]>4){
+					F3[FloorAndRoom[1]]="Nothing";
+					Inventory(INV, 0);
+				}
+			}
+			else if(RoomMenuSelect==2){
+				System.out.println("You leave the room");
+				System.out.print("Which room would you like to enter (1-10): ");
+				FloorAndRoom[1]=input.nextInt();
+				FloorAndRoom[1]=FloorAndRoom[1]-1;
+				while(FloorAndRoom[1]<0||FloorAndRoom[1]>9){
+					System.out.println("INALID INPUT");
+					System.out.print("Which room would you like to enter (1-10): ");
+					FloorAndRoom[1]=input.nextInt();
+					FloorAndRoom[1]=FloorAndRoom[1]-1;
+				}
+				while(FloorAndRoom[1]==9){
+					StairWell(FloorAndRoom, Status);
+					System.out.println("You back away from the door");
+					System.out.print("Which room would you like to enter (1-10): ");
+					FloorAndRoom[1]=input.nextInt();
+				}
+			}
+			else if(RoomMenuSelect==3){
+				GAMEOVER(FloorAndRoom, Status);
+			}
+			else System.out.println("INVALID INPUT");
+		}
+	}
+	static boolean[] Paracute(Integer[] INV, boolean[] Status){
+		if(INV[0]==9&&INV[1]==1){
+			Status[0]=true;
+		}
+		return Status;
 	}
 	static Integer[] Inventory(Integer[] INV, int itemID){
 		INV[itemID]=INV[itemID]+1;
@@ -139,40 +226,63 @@ public class HotelV1{
 			System.out.println("The door is locked!");
 		}
 		else{
-			System.out.print("Do you want to go up (1), down (2) or back (3): ");
-			int x=input.nextInt();
-			while(x<1&&x>3){
-				System.out.println("INVALID INPUT");
-				System.out.print("Do you want to go up (1), down (2) or back (3): ");
-				x=input.nextInt();
-			}
-			if(FloorAndRoom[0]>1&&FloorAndRoom[0]<3){
+			UpOrDown(FloorAndRoom);
+		}
+		return FloorAndRoom;
+	}
+	static Integer[] UpOrDown(Integer[] FloorAndRoom){
+		Scanner input=new Scanner(System.in);
+		int x=0;
+		while(x!=3){
+			System.out.print("You are on Floor "+(FloorAndRoom[0]+5)+" would you like to go up (1), down (2), or back (3): ");
+			x=input.nextInt();
+			if(FloorAndRoom[0]==3){
 				if(x==1){
-					FloorAndRoom[0]=FloorAndRoom[0]+1;
-					System.out.println("You entered floor "+(FloorAndRoom[0]+5));
-				}
-				else if(x==2){
-					FloorAndRoom[0]=FloorAndRoom[0]+1;
-					System.out.println("You entered floor "+(FloorAndRoom[0]+5));
+					System.out.println("You cannot go any higher");
 				}
 				else{
-					System.out.println("You entered floor "+(FloorAndRoom[0]+5));
+					System.out.println("You went down 1 floor");
+					FloorAndRoom[0]=FloorAndRoom[0]-1;
+				}
+			}
+			else if(FloorAndRoom[0]==2){
+				if(x==1){
+					System.out.println("You went up 1 floor");
+					FloorAndRoom[0]=FloorAndRoom[0]+1;
+				}
+				else if(x==2){
+					System.out.println("You went down 1 floor");
+					FloorAndRoom[0]=FloorAndRoom[0]-1;
+				}
+			}
+			else{
+				if(x==1){
+					System.out.println("You went up 1 floor");
+					FloorAndRoom[0]=FloorAndRoom[0]+1;
+				}
+				else{
+					System.out.println("You cannot go any lower due to the path being blocked off");
 				}
 			}
 		}
 		return FloorAndRoom;
 	}
-	static void GAMEOVER(Integer[] FloorAndRoom){
-		for(int delay=0; delay<(FloorAndRoom[0]+5); delay++){
-			try{
-				Thread.sleep(279);
-			}
-			catch (InterruptedException ie){
-				ie.printStackTrace();
-			}
-			System.out.println(".");
+	static void GAMEOVER(Integer[] FloorAndRoom, boolean[] Status){
+		if(Status[0]==true){
+			System.out.println("Congratulations You Won!!!");
 		}
-		System.out.println("GAME OVER!");
-		System.exit(0);
-	}
+		else{
+			for(int delay=0; delay<(FloorAndRoom[0]+5); delay++){
+				try{
+					Thread.sleep(279);
+				}
+				catch (InterruptedException ie){
+					ie.printStackTrace();
+				}
+				System.out.println(".");
+			}
+			System.out.println("GAME OVER!");
+			System.exit(0);
+		}
+	}	
 }
